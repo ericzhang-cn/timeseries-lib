@@ -1,4 +1,4 @@
-package org.codinglabs.timeseries_lib.lib;
+package org.codinglabs.timeseries_lib.arima;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class Transformation {
 	return instance;
     }
 
-    public ArrayList<Double> difference(ArrayList<Double> series, int k) {
+    public ArrayList<Double> diff(ArrayList<Double> series, int k) {
 	if (k < 0 || series.size() == 0) {
 	    return null;
 	}
@@ -30,6 +30,6 @@ public class Transformation {
 	    df.add(series.get(i) - series.get(i - 1));
 	}
 
-	return difference(df, k - 1);
+	return diff(df, k - 1);
     }
 }

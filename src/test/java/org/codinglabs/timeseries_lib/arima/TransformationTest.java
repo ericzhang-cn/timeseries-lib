@@ -1,6 +1,8 @@
-package org.codinglabs.timeseries_lib.lib;
+package org.codinglabs.timeseries_lib.arima;
 
 import java.util.ArrayList;
+
+import org.codinglabs.timeseries_lib.arima.Transformation;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -20,9 +22,9 @@ public class TransformationTest extends TestCase {
 	series.add(10D);
 
 	Transformation tf = Transformation.getInstance();
-	ArrayList<Double> df0 = tf.difference(series, 0);
-	ArrayList<Double> df1 = tf.difference(series, 1);
-	ArrayList<Double> df2 = tf.difference(series, 2);
+	ArrayList<Double> df0 = tf.diff(series, 0);
+	ArrayList<Double> df1 = tf.diff(series, 1);
+	ArrayList<Double> df2 = tf.diff(series, 2);
 
 	Assert.assertEquals(1D, df0.get(0));
 	Assert.assertEquals(1D, df1.get(0));

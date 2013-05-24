@@ -1,7 +1,9 @@
-package org.codinglabs.timeseries_lib.lib;
+package org.codinglabs.timeseries_lib.arima;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+import org.codinglabs.timeseries_lib.arima.Statistics;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

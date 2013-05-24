@@ -1,4 +1,4 @@
-package org.codinglabs.timeseries_lib.lib;
+package org.codinglabs.timeseries_lib.arima;
 
 import java.util.ArrayList;
 
@@ -57,17 +57,17 @@ public class Statistics {
      * 
      * @param series
      *            Time series
-     * @param hy
-     *            hysteresis
+     * @param lag
+     *            lag
      * @return Autocorrelation function values
      */
-    public ArrayList<Double> acf(ArrayList<Double> series, int hy) {
-	if (series.size() == 0 || hy < 0) {
+    public ArrayList<Double> acf(ArrayList<Double> series, int lag) {
+	if (series.size() == 0 || lag < 0) {
 	    return null;
 	}
 
 	ArrayList<Double> ac = new ArrayList<Double>();
-	for (int i = 0; i <= hy; i++) {
+	for (int i = 0; i <= lag; i++) {
 	    ac.add(autocorrelation(series, i));
 	}
 
