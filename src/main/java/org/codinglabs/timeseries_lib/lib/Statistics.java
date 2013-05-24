@@ -8,6 +8,19 @@ import java.util.ArrayList;
  * @author ericzhang
  */
 public class Statistics {
+	private static Statistics instance;
+
+	private Statistics() {
+	}
+
+	public static synchronized Statistics getInstance() {
+		if (instance == null) {
+			instance = new Statistics();
+		}
+
+		return instance;
+	}
+
 	/***
 	 * Calculate autocorrelation
 	 * 
@@ -17,7 +30,7 @@ public class Statistics {
 	 *            Order
 	 * @return Autocorrelation coefficient
 	 */
-	public static double autocorrelation(ArrayList<Double> series, int k) {
+	public double autocorrelation(ArrayList<Double> series, int k) {
 		if (k < 0 || series.size() <= k) {
 			return 0D;
 		}
