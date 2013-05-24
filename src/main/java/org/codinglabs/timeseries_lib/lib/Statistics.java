@@ -18,7 +18,7 @@ public class Statistics {
 	 * @return Autocorrelation coefficient
 	 */
 	public static double autocorrelation(ArrayList<Double> series, int k) {
-		if (k < 1 || series.size() <= k) {
+		if (k < 0 || series.size() <= k) {
 			return 0D;
 		}
 

@@ -21,7 +21,9 @@ public class StatisticsTest extends TestCase {
 		series.add(10D);
 
 		DecimalFormat df = new DecimalFormat("0.000");
-
+		
+		Assert.assertEquals(df.format(1.000),
+				df.format(Statistics.autocorrelation(series, 0)));
 		Assert.assertEquals(df.format(0.700),
 				df.format(Statistics.autocorrelation(series, 1)));
 		Assert.assertEquals(df.format(0.412),
