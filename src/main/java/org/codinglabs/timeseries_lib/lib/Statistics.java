@@ -51,4 +51,26 @@ public class Statistics {
 
 	return a / b;
     }
+
+    /**
+     * Autocorrelation function
+     * 
+     * @param series
+     *            Time series
+     * @param hy
+     *            hysteresis
+     * @return Autocorrelation function values
+     */
+    public ArrayList<Double> acf(ArrayList<Double> series, int hy) {
+	if (series.size() == 0 || hy < 0) {
+	    return null;
+	}
+
+	ArrayList<Double> ac = new ArrayList<Double>();
+	for (int i = 0; i <= hy; i++) {
+	    ac.add(autocorrelation(series, i));
+	}
+
+	return ac;
+    }
 }
