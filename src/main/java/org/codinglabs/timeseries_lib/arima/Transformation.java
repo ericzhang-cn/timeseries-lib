@@ -2,6 +2,11 @@ package org.codinglabs.timeseries_lib.arima;
 
 import java.util.ArrayList;
 
+/**
+ * Transformations in common use
+ * 
+ * @author ericzhang
+ */
 public class Transformation {
     private static Transformation instance;
 
@@ -16,6 +21,15 @@ public class Transformation {
 	return instance;
     }
 
+    /**
+     * Difference
+     * 
+     * @param series
+     *            Time series
+     * @param k
+     *            Order
+     * @return Differential time series
+     */
     public ArrayList<Double> diff(ArrayList<Double> series, int k) {
 	if (k < 0 || series.size() == 0) {
 	    return null;
@@ -31,5 +45,21 @@ public class Transformation {
 	}
 
 	return diff(df, k - 1);
+    }
+
+    /**
+     * Logarithm transformation
+     * 
+     * @param series
+     *            Time series
+     * @return Log time series
+     */
+    public ArrayList<Double> log(ArrayList<Double> series) {
+	ArrayList<Double> result = new ArrayList<Double>();
+	for (Double s : series) {
+	    result.add(Math.log(s));
+	}
+
+	return result;
     }
 }
