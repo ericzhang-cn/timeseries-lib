@@ -8,47 +8,47 @@ import java.util.ArrayList;
  * @author ericzhang
  */
 public class Statistics {
-	private static Statistics instance;
+    private static Statistics instance;
 
-	private Statistics() {
+    private Statistics() {
+    }
+
+    public static synchronized Statistics getInstance() {
+	if (instance == null) {
+	    instance = new Statistics();
 	}
 
-	public static synchronized Statistics getInstance() {
-		if (instance == null) {
-			instance = new Statistics();
-		}
+	return instance;
+    }
 
-		return instance;
+    /***
+     * Calculate autocorrelation
+     * 
+     * @param series
+     *            Time series
+     * @param k
+     *            Order
+     * @return Autocorrelation coefficient
+     */
+    public double autocorrelation(ArrayList<Double> series, int k) {
+	if (k < 0 || series.size() <= k) {
+	    return 0D;
 	}
 
-	/***
-	 * Calculate autocorrelation
-	 * 
-	 * @param series
-	 *            Time series
-	 * @param k
-	 *            Order
-	 * @return Autocorrelation coefficient
-	 */
-	public double autocorrelation(ArrayList<Double> series, int k) {
-		if (k < 0 || series.size() <= k) {
-			return 0D;
-		}
-
-		double sum = 0D;
-		for (Double s : series) {
-			sum += s;
-		}
-		double avg = sum / series.size();
-
-		double a = 0D, b = 0D;
-		for (int i = 0; i < series.size(); i++) {
-			b += (series.get(i) - avg) * (series.get(i) - avg);
-			if (i >= k) {
-				a += (series.get(i) - avg) * (series.get(i - k) - avg);
-			}
-		}
-
-		return a / b;
+	double sum = 0D;
+	for (Double s : series) {
+	    sum += s;
 	}
+	double avg = sum / series.size();
+
+	double a = 0D, b = 0D;
+	for (int i = 0; i < series.size(); i++) {
+	    b += (series.get(i) - avg) * (series.get(i) - avg);
+	    if (i >= k) {
+		a += (series.get(i) - avg) * (series.get(i - k) - avg);
+	    }
+	}
+
+	return a / b;
+    }
 }
