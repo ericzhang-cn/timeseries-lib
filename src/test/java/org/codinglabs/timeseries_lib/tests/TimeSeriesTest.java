@@ -31,8 +31,8 @@ public class TimeSeriesTest {
     @Test
     public void testGetAutocovariance() {
         Assert.assertEquals(8.25D, ts.getAutocovariance(0), 0.01);
-        Assert.assertEquals(6.42D, ts.getAutocovariance(1), 0.01);
-        Assert.assertEquals(4.25D, ts.getAutocovariance(2), 0.01);
+        Assert.assertEquals(5.78D, ts.getAutocovariance(1), 0.01);
+        Assert.assertEquals(3.40D, ts.getAutocovariance(2), 0.01);
     }
     
     @Test

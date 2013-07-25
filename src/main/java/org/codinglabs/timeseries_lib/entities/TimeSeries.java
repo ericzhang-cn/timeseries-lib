@@ -20,13 +20,14 @@ public class TimeSeries {
     /**
      * Memorandum
      * 
-     * Cache result of computation.
+     * Cache results of computation.
      */
     protected Map<String, Double> memo;
 
     /**
      * Time points
      */
+    @Getter
     protected double[] points;
 
     /**
@@ -126,9 +127,6 @@ public class TimeSeries {
     /**
      * Get auto-covariance
      * 
-     * This function use average of all points to computer auto-covariance, the
-     * result may be not match its math mathematical definition.
-     * 
      * @param k
      *            Lag
      * @return Auto-covariance
@@ -150,7 +148,7 @@ public class TimeSeries {
                 total += (this.points[i - k] - avg) * (this.points[i] - avg);
             }
 
-            this.memo.put("acov" + k, total / (this.number - k));
+            this.memo.put("acov" + k, total / this.number);
         }
 
         return this.memo.get("acov" + k);
@@ -166,10 +164,8 @@ public class TimeSeries {
     @SneakyThrows
     public double getAutocorrelation(int k) {
         if (!this.memo.containsKey("acor" + k)) {
-            this.memo
-                    .put("acor" + k,
-                            this.getAutocovariance(k)
-                                    / (this.getVariance() * this.number / (this.number - k)));
+            this.memo.put("acor" + k,
+                    this.getAutocovariance(k) / this.getVariance());
         }
 
         return this.memo.get("acor" + k);
