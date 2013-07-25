@@ -9,20 +9,47 @@ import lombok.extern.log4j.Log4j;
 
 import org.codinglabs.timeseries_lib.exceptions.TSLOutOfRangeException;
 
+/**
+ * Time series class
+ * 
+ * @author ericzhang
+ */
 @Log4j
 public class TimeSeries {
 
+    /**
+     * Memorandum
+     * 
+     * Cache result of computation.
+     */
     protected Map<String, Double> memo;
 
+    /**
+     * Time points
+     */
     protected double[] points;
 
+    /**
+     * Number of points
+     */
     @Getter
     protected int number;
 
+    /**
+     * Constructor
+     * 
+     * The default number is 128
+     */
     public TimeSeries() {
         this(128);
     }
 
+    /**
+     * Constructor
+     * 
+     * @param _number
+     *            Number of points
+     */
     public TimeSeries(int _number) {
         if (_number <= 0) {
             this.number = 128;
@@ -36,6 +63,14 @@ public class TimeSeries {
         this.memo = new HashMap<String, Double>();
     }
 
+    /**
+     * Set time point value
+     * 
+     * @param index
+     *            Point index
+     * @param value
+     *            Time point value
+     */
     @SneakyThrows
     public void setTimePoint(int index, double value) {
         if (index < 0 || index >= this.number) {
@@ -49,6 +84,11 @@ public class TimeSeries {
         }
     }
 
+    /**
+     * Get average
+     * 
+     * @return Average
+     */
     public double getAverage() {
         if (!this.memo.containsKey("avg")) {
             double total = 0D;
@@ -63,6 +103,11 @@ public class TimeSeries {
         return this.memo.get("avg");
     }
 
+    /**
+     * Get variance
+     * 
+     * @return Variance
+     */
     public double getVariance() {
         if (!this.memo.containsKey("var")) {
             double avg = this.getAverage();
@@ -78,6 +123,16 @@ public class TimeSeries {
         return this.memo.get("var");
     }
 
+    /**
+     * Get auto-covariance
+     * 
+     * This function use average of all points to computer auto-covariance, the
+     * result may be not match its math mathematical definition.
+     * 
+     * @param k
+     *            Lag
+     * @return Auto-covariance
+     */
     @SneakyThrows
     public double getAutocovariance(int k) {
         if (!this.memo.containsKey("acov" + k)) {
@@ -101,6 +156,13 @@ public class TimeSeries {
         return this.memo.get("acov" + k);
     }
 
+    /**
+     * Get auto-correlation
+     * 
+     * @param k
+     *            Lag
+     * @return Auto-correlation
+     */
     @SneakyThrows
     public double getAutocorrelation(int k) {
         if (!this.memo.containsKey("acor" + k)) {
