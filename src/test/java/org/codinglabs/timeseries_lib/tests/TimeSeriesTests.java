@@ -1,23 +1,45 @@
 package org.codinglabs.timeseries_lib.tests;
 
-import lombok.extern.log4j.Log4j;
+import junit.framework.Assert;
 
 import org.codinglabs.timeseries_lib.entities.TimeSeries;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-@Log4j
 public class TimeSeriesTests {
 
-    @Test
-    public void test() {
-        TimeSeries ts = new TimeSeries(10);
+    private static TimeSeries ts;
+
+    @BeforeClass
+    public static void beforeClass() {
+        ts = new TimeSeries(10);
         for (int i = 0; i < 10; i++) {
             ts.setTimePoint(i, i + 1);
         }
-        
-        log.info(ts.getAutocorrelation(1));
-        log.info(ts.getAutocorrelation(2));
-        log.info(ts.getAutocorrelation(3));
+    }
+
+    @Test
+    public void testGetAverage() {
+        Assert.assertEquals(5.50D, ts.getAverage(), 0.01);
+    }
+
+    @Test
+    public void testGetVariance() {
+        Assert.assertEquals(8.25D, ts.getVariance(), 0.01);
+    }
+
+    @Test
+    public void testGetAutocovariance() {
+        Assert.assertEquals(8.25D, ts.getAutocovariance(0), 0.01);
+        Assert.assertEquals(6.42D, ts.getAutocovariance(1), 0.01);
+        Assert.assertEquals(4.25D, ts.getAutocovariance(2), 0.01);
+    }
+    
+    @Test
+    public void testGetAutocorrelation() {
+        Assert.assertEquals(1.00D, ts.getAutocorrelation(0), 0.01);
+        Assert.assertEquals(0.70D, ts.getAutocorrelation(1), 0.01);
+        Assert.assertEquals(0.42D, ts.getAutocorrelation(2), 0.01);
     }
 
 }
