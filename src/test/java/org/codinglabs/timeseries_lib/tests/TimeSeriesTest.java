@@ -6,7 +6,7 @@ import org.codinglabs.timeseries_lib.entities.TimeSeries;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TimeSeriesTests {
+public class TimeSeriesTest {
 
     private static TimeSeries ts;
 
