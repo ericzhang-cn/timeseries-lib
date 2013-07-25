@@ -1,5 +1,8 @@
 package org.codinglabs.timeseries_lib.entities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j;
@@ -8,6 +11,8 @@ import org.codinglabs.timeseries_lib.exceptions.TSLOutOfRangeException;
 
 @Log4j
 public class TimeSeries {
+
+    protected Map<String, Double> memo;
 
     protected double[] points;
 
@@ -27,6 +32,8 @@ public class TimeSeries {
             this.number = _number;
         }
         this.points = new double[this.number];
+
+        this.memo = new HashMap<String, Double>();
     }
 
     @SneakyThrows
@@ -36,52 +43,74 @@ public class TimeSeries {
         }
 
         this.points[index] = value;
+
+        if (this.memo.size() > 0) {
+            this.memo.clear();
+        }
     }
 
     public double getAverage() {
-        double total = 0D;
+        if (!this.memo.containsKey("avg")) {
+            double total = 0D;
 
-        for (double tp : this.points) {
-            total += tp;
+            for (double tp : this.points) {
+                total += tp;
+            }
+
+            this.memo.put("avg", total / this.number);
         }
 
-        return total / this.number;
+        return this.memo.get("avg");
     }
 
     public double getVariance() {
-        double avg = this.getAverage();
-        double total = 0D;
+        if (!this.memo.containsKey("var")) {
+            double avg = this.getAverage();
+            double total = 0D;
 
-        for (double tp : this.points) {
-            total += (tp - avg) * (tp - avg);
+            for (double tp : this.points) {
+                total += (tp - avg) * (tp - avg);
+            }
+
+            this.memo.put("var", total / this.number);
         }
 
-        return total / this.number;
+        return this.memo.get("var");
     }
 
     @SneakyThrows
     public double getAutocovariance(int k) {
-        if (k < 0 || k >= this.number) {
-            throw new TSLOutOfRangeException();
+        if (!this.memo.containsKey("acov" + k)) {
+            if (k < 0 || k >= this.number) {
+                throw new TSLOutOfRangeException();
+            }
+
+            if (k == 0) {
+                return this.getVariance();
+            }
+
+            double total = 0D;
+            double avg = this.getAverage();
+            for (int i = k; i < this.number; i++) {
+                total += (this.points[i - k] - avg) * (this.points[i] - avg);
+            }
+
+            this.memo.put("acov" + k, total / (this.number - k));
         }
 
-        if (k == 0) {
-            return this.getVariance();
-        }
-
-        double total = 0D;
-        double avg = this.getAverage();
-        for (int i = k; i < this.number; i++) {
-            total += (this.points[i - k] - avg) * (this.points[i] - avg);
-        }
-
-        return total / (this.number - k);
+        return this.memo.get("acov" + k);
     }
 
     @SneakyThrows
     public double getAutocorrelation(int k) {
-        return this.getAutocovariance(k)
-                / (this.getVariance() * this.number / (this.number - k));
+        if (!this.memo.containsKey("acor" + k)) {
+            this.memo
+                    .put("acor" + k,
+                            this.getAutocovariance(k)
+                                    / (this.getVariance() * this.number / (this.number - k)));
+        }
+
+        return this.memo.get("acor" + k);
     }
 
 }
