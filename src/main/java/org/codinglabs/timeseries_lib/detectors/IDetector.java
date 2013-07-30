@@ -10,6 +10,7 @@ import org.codinglabs.timeseries_lib.entities.TimeSeries;
  * @author ericzhang
  */
 public interface IDetector {
+    
     /**
      * Determine if time series has some natures
      * 
@@ -18,4 +19,5 @@ public interface IDetector {
      * @return Is the time series has some natures
      */
     boolean detect(TimeSeries ts);
+    
 }
