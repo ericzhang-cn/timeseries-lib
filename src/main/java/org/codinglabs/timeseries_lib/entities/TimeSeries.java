@@ -171,4 +171,60 @@ public class TimeSeries {
         return this.memo.get("acor" + k);
     }
 
+    /**
+     * Get ACF
+     * 
+     * @param n
+     *            lag
+     * @return ACF values
+     */
+    public double[] acf(int n) {
+        if (n <= 0) {
+            n = 10;
+        }
+        double[] acfValues = new double[n + 1];
+
+        for (int i = 0; i <= n; i++) {
+            acfValues[i] = this.getAutocorrelation(i);
+        }
+
+        return acfValues;
+    }
+
+    /**
+     * Get PACF
+     * 
+     * @param n
+     *            lag
+     * @return PACF values
+     */
+    public double[] pacf(int n) {
+        if (n <= 0) {
+            n = 10;
+        }
+        double[] pacfValues = new double[n + 1];
+        double[][] phi = new double[n + 1][n + 1];
+
+        pacfValues[0] = phi[0][0] = 1D;
+        pacfValues[1] = phi[1][1] = this.getAutocorrelation(1);
+
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j < i - 1; j++) {
+                phi[i - 1][j] = phi[i - 2][j] - phi[i - 1][i - 1]
+                        * phi[i - 2][i - 1 - j];
+            }
+
+            double a = 0D, b = 0D;
+            for (int j = 1; j < i; j++) {
+                a += phi[i - 1][j] * this.getAutocorrelation(i - j);
+                b += phi[i - 1][j] * this.getAutocorrelation(j);
+            }
+
+            pacfValues[i] = phi[i][i] = (this.getAutocorrelation(i) - a)
+                    / (1 - b);
+        }
+
+        return pacfValues;
+    }
+
 }
