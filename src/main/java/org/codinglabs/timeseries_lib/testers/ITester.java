@@ -1,15 +1,15 @@
-package org.codinglabs.timeseries_lib.detectors;
+package org.codinglabs.timeseries_lib.testers;
 
 import org.codinglabs.timeseries_lib.entities.TimeSeries;
 
 /**
- * Interface for detectors
+ * Interface for testers
  * 
- * One detector can be used to determine if time series has some natures.
+ * One tester can be used to determine if time series has some natures.
  * 
  * @author ericzhang
  */
-public interface IDetector {
+public interface ITester {
     
     /**
      * Determine if time series has some natures
@@ -18,6 +18,6 @@ public interface IDetector {
      *            Time series
      * @return Is the time series has some natures
      */
-    boolean detect(TimeSeries ts);
+    boolean test(TimeSeries ts);
     
 }
