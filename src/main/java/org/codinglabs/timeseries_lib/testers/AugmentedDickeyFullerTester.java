@@ -7,9 +7,8 @@ import org.codinglabs.timeseries_lib.entities.TimeSeries;
  * 
  * @author ericzhang
  */
-public class AugmentedDickeyFullerTester implements ITester {
+public class AugmentedDickeyFullerTester {
 
-	@Override
 	public boolean test(TimeSeries ts) {
 		// TODO Auto-generated method stub
 		return false;
